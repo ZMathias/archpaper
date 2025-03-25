@@ -20,8 +20,7 @@ write_default_config() {
 }
 
 set_up_scheduling_units() {
-    sudo touch /home/mathias/.config/systemd/user/daily_wallpaper.service
-    sudo tee /home/mathias/.config/systemd/user/daily_wallpaper.service > /dev/null << EOF
+    sudo tee $HOME/.config/systemd/user/daily_wallpaper.service > /dev/null << EOF
 [Unit]
 Description=Run daily_wallpaper service to set bing wallpapers automatically.
 After=network-online.target
@@ -32,8 +31,7 @@ ExecStart=${HOME}/.config/daily_wallpaper/daily_wallpaper.sh
 WorkingDirectory=${HOME}/.config/daily_wallpaper
 Type=oneshot
 EOF
-        sudo touch /home/mathias/.config/systemd/user/daily_wallpaper.timer
-        sudo tee /home/mathias/.config/systemd/user/daily_wallpaper.timer > /dev/null << 'EOF' # HERE-DOC START
+        sudo tee $HOME/.config/systemd/user/daily_wallpaper.timer > /dev/null << 'EOF' # HERE-DOC START
 [Unit]
 Description=Run daily_wallpaper at boot and at midnight
 
