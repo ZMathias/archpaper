@@ -20,6 +20,7 @@ write_default_config() {
 }
 
 set_up_scheduling_units() {
+    sudo touch /home/mathias/.config/systemd/user/daily_wallpaper.service
     sudo tee /home/mathias/.config/systemd/user/daily_wallpaper.service > /dev/null << EOF
 [Unit]
 Description=Run daily_wallpaper service to set bing wallpapers automatically.
@@ -31,7 +32,7 @@ ExecStart=${HOME}/.config/daily_wallpaper/daily_wallpaper.sh
 WorkingDirectory=${HOME}/.config/daily_wallpaper
 Type=oneshot
 EOF
-
+        sudo touch /home/mathias/.config/systemd/user/daily_wallpaper.timer
         sudo tee /home/mathias/.config/systemd/user/daily_wallpaper.timer > /dev/null << 'EOF' # HERE-DOC START
 [Unit]
 Description=Run daily_wallpaper at boot and at midnight
@@ -96,9 +97,9 @@ place_script
 if [[ -f "$HOME/.config/systemd/user/daily_wallpaper.service" ]]; then
     echo "[INFO] Scheduling units are already set up"
 else
-    read -p "Do you want me to set the scheduling units automatically? (y/n): " answer
+    read -p "Do you want me to set the scheduling units automatically? (Y/n): " answer
 
-    if [[ "$answer" =~ ^[Yy]$ ]]; then
+    if [[ -z "$answer" || "$answer" =~ ^[Yy]$ ]]; then
         echo "Setting up scheduling scripts..."
         set_up_scheduling_units
     else
